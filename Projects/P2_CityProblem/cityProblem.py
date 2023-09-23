@@ -1,9 +1,12 @@
 # Author: Derek Dorr
 # Class: CPSC 535 - Advanced Algorithms
+# Project 1
+# Problem 2 - Preferred City Problem
 
 # Inputs
 city_distances = [5, 25, 15, 10, 15]
 city_fuel = [1, 2, 1, 0, 3]
+temp = [5, 50, 15, 0, 45]
 mpg = 10
 
 FAILED_TO_FIND = -1
@@ -16,7 +19,6 @@ def city_problem():
 
         # Check if current city has enough fuel to get us to the next city
         if mpg * city_fuel[city] >= i:
-            print(f"Able to drive from {city} to {(city + 1) % len(city_distances)}")
 
             # Start driving from current city
             preferred_city = drive_cities(city, 0, city)
@@ -25,16 +27,11 @@ def city_problem():
             if preferred_city:
                 return city
 
-        # Not enough gas to leave current city
-        else:
-            print(f"not enough gas at {city}")
-
     # In case of failure
     return FAILED_TO_FIND
 
 
 def drive_cities(current_city, gas_reserves, starting_city):
-    print("Arrived at: ", current_city)
 
     # Fuel up upon reaching each city
     fuel_up = gas_reserves + (mpg * city_fuel[current_city])
@@ -58,7 +55,9 @@ def drive_cities(current_city, gas_reserves, starting_city):
 
 
 if __name__ == '__main__':
-
+    print(f"city distances: {city_distances}")
+    print(f"city fuel: {city_fuel}")
+    print(f"mpg: {mpg}")
     # Run the algorithm
     preferred_starting_city = city_problem()
 
