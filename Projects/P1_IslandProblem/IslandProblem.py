@@ -26,11 +26,9 @@ def island_problem():
     for y, row in enumerate(WORLD):
         for x, tile in enumerate(row):
             if tile == WATER:
-                # Weight is the sum of lands adjacent to that water
-                weight = calculate_water_weight(x, y)
 
                 # If the water has at least 1 adjacent land, test it
-                if weight > 0:
+                if water_has_adjacent_land(x, y):
                     land_size = get_new_world_best_score(x, y)
 
                     # Track longest continuous path size
@@ -45,11 +43,13 @@ def get_new_world_best_score(x, y):
     land_max = 0
 
     modified_world = []
-    # Create a copy of the input that can be modified
+    # Create a copy of the WORLD that can be modified
     for ty, row in enumerate(WORLD):
         modified_world.append([])
         for tx, tile in enumerate(row):
             modified_world[ty].append(tile)
+
+            # If current indices == input indices, set element to 0
             if ty == y and tx == x:
                 modified_world[ty][tx] = 0
 
@@ -64,7 +64,7 @@ def get_new_world_best_score(x, y):
                 # Walk modified_world to find longest continuous path of lands
                 land_count = walk_list(x, y, modified_world, 1)
 
-                # Track longest continuous path size
+                # Track maximum path size
                 if land_count > land_max:
                     land_max = land_count
 
@@ -72,71 +72,71 @@ def get_new_world_best_score(x, y):
 
 
 # Walk through the modified WORLD by looking left, right, up, and down
-def walk_list(x, y, input, sum):
+def walk_list(x, y, modified_world, sum):
     global visited_lands
     # Ensure next step's coordinates are not already visited or out of bounds
     #
     # look left
     if (x - 1) >= 0 and not [x-1, y] in visited_lands:
-        if input[y][x-1] == 0:
+        if modified_world[y][x-1] == 0:
             # Keep track of visited lands
             visited_lands.append([x - 1, y])
 
-            sum = walk_list(x-1, y, input, 1 + sum)
+            sum = walk_list(x-1, y, modified_world, 1 + sum)
 
     # look right
-    if (x + 1) < len(input[y]) and not [x + 1, y] in visited_lands:
-        if input[y][x + 1] == 0:
+    if (x + 1) < len(modified_world[y]) and not [x + 1, y] in visited_lands:
+        if modified_world[y][x + 1] == 0:
             # Keep track of visited lands
             visited_lands.append([x + 1, y])
 
-            sum = walk_list(x+1, y, input, 1 + sum)
+            sum = walk_list(x+1, y, modified_world, 1 + sum)
 
     # look up
     if (y - 1) >= 0 and not [x, y-1] in visited_lands:
-        if input[y-1][x] == 0:
+        if modified_world[y-1][x] == 0:
             # Keep track of visited lands
             visited_lands.append([x, y - 1])
 
-            sum = walk_list(x, y-1, input, 1 + sum)
+            sum = walk_list(x, y-1, modified_world, 1 + sum)
 
     # look down
-    if (y + 1) < len(input) and not [x, y+1] in visited_lands:
-        if input[y+1][x] == 0:
+    if (y + 1) < len(modified_world) and not [x, y+1] in visited_lands:
+        if modified_world[y+1][x] == 0:
             # Keep track of visited lands
             visited_lands.append([x, y + 1])
 
-            sum = walk_list(x, y+1, input, 1 + sum)
+            sum = walk_list(x, y+1, modified_world, 1 + sum)
 
     return sum
 
 
-# Determine the weight of a water square by counting adjacent lands
-def calculate_water_weight(x, y):
-    weight = 0
+# Determine if water has adjacent lands
+def water_has_adjacent_land(x, y):
     # Ensure next step's coordinates are not already visited or out of bounds
+    # Immediately return if a land is found
 
     # look left
     if (x - 1) >= 0:
         if WORLD[y][x-1] == 0:
-            weight += 1
+            return True
 
     # look right
     if (x + 1) < len(WORLD[y]):
         if WORLD[y][x + 1] == 0:
-            weight += 1
+            return True
 
     # look up
     if (y - 1) >= 0:
         if WORLD[y-1][x] == 0:
-            weight += 1
+            return True
 
     # look down
     if (y + 1) < len(WORLD):
         if WORLD[y+1][x] == 0:
-            weight += 1
+            return True
 
-    return weight
+    return False
 
 
 if __name__ == '__main__':
