@@ -6,7 +6,6 @@
 # Inputs
 city_distances = [5, 25, 15, 10, 15]
 city_fuel = [1, 2, 1, 0, 3]
-temp = [5, 50, 15, 0, 45]
 mpg = 10
 
 FAILED_TO_FIND = -1
