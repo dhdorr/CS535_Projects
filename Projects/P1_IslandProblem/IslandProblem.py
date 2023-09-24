@@ -10,19 +10,19 @@
 #         [1, 1, 0]
 # ]
 
-# WORLD = [
-#     [1, 0, 1, 0, 0],
-#     [0, 0, 1, 1, 0],
-#     [0, 1, 1, 1, 1],
-#     [1, 0, 1, 0, 0]
-# ]
-
 WORLD = [
-    [1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1]
+    [1, 0, 1, 0, 0],
+    [0, 0, 1, 1, 0],
+    [0, 1, 1, 1, 1],
+    [1, 0, 1, 0, 0]
 ]
+
+# WORLD = [
+#     [1, 1, 1, 1, 1],
+#     [1, 1, 1, 1, 1],
+#     [1, 1, 1, 1, 1],
+#     [1, 1, 1, 1, 1]
+# ]
 
 visited_lands = []
 WATER = 1
@@ -30,7 +30,9 @@ LAND = 0
 
 
 def island_problem():
-    land_max = 0
+    # Problem will always have at least 1 LAND
+    land_max = 1
+
     # Loop through input and find all water locations
     for y, row in enumerate(WORLD):
         for x, tile in enumerate(row):
@@ -43,10 +45,7 @@ def island_problem():
                 if land_size > land_max:
                     land_max = land_size
 
-    # Edge case where WORLD is all WATERs
-    if land_max == 0:
-        land_max = 1
-
+    # Return greatest possible Island Size for the input
     return land_max
 
 
@@ -80,6 +79,7 @@ def get_new_world_best_score(x, y):
                 if land_count > land_max:
                     land_max = land_count
 
+    # Return greatest Island Size in modified WORLD
     return land_max
 
 
@@ -121,6 +121,7 @@ def walk_list(x, y, modified_world, land_count):
 
             land_count = walk_list(x, y+1, modified_world, 1 + land_count)
 
+    # Return length of Island Path
     return land_count
 
 
