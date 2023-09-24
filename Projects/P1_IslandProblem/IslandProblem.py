@@ -3,77 +3,76 @@
 # Project 1
 # Problem 1 - Island Problem
 
-# Inputs
+
+# EXAMPLE INPUTS
+#
 # WORLD = [
 #         [0, 1, 1],
 #         [0, 0, 1],
 #         [1, 1, 0]
 # ]
-
-WORLD = [
-    [1, 0, 1, 0, 0],
-    [0, 0, 1, 1, 0],
-    [0, 1, 1, 1, 1],
-    [1, 0, 1, 0, 0]
-]
-
+#
+# WORLD = [
+#     [1, 0, 1, 0, 0],
+#     [0, 0, 1, 1, 0],
+#     [0, 1, 1, 1, 1],
+#     [1, 0, 1, 0, 0]
+# ]
+#
 # WORLD = [
 #     [1, 1, 1, 1, 1],
 #     [1, 1, 1, 1, 1],
 #     [1, 1, 1, 1, 1],
 #     [1, 1, 1, 1, 1]
 # ]
+#
+# WORLD = [
+#     [0, 0, 0, 0, 0],
+#     [0, 0, 0, 0, 0],
+#     [0, 0, 1, 0, 0],
+#     [0, 0, 0, 0, 0]
+# ]
 
-visited_lands = []
+# CONSTANTS
 WATER = 1
 LAND = 0
 
 
-def island_problem():
+def island_problem(world):
     # Problem will always have at least 1 LAND
     land_max = 1
 
     # Loop through input and find all water locations
-    for y, row in enumerate(WORLD):
+    for y, row in enumerate(world):
         for x, tile in enumerate(row):
 
-            # If the water has at least 1 adjacent land, test it
+            # If the water has at least 1 adjacent land, change WATER tile to LAND
             if tile == WATER and water_has_adjacent_land(x, y):
-                land_size = get_new_world_best_score(x, y)
+                # Modify world
+                world[y][x] = LAND
 
-                # Track longest continuous path size
-                if land_size > land_max:
-                    land_max = land_size
+                # Find adjacent LAND size
+                land_max = get_new_world_best_score(x, y, world, land_max)
+
+                # Reset world
+                world[y][x] = WATER
 
     # Return greatest possible Island Size for the input
     return land_max
 
 
-def get_new_world_best_score(x, y):
-    global visited_lands
-    land_max = 0
-
-    modified_world = []
-    # Create a copy of the WORLD that can be modified
-    for ty, row in enumerate(WORLD):
-        modified_world.append([])
-        for tx, tile in enumerate(row):
-            modified_world[ty].append(tile)
-
-            # If current indices == input WATER indices, set WATER to LAND
-            if ty == y and tx == x:
-                modified_world[ty][tx] = LAND
-
+def get_new_world_best_score(x, y, modified_world, land_max):
     # Loop through elements of modified_world
     for ty, row in enumerate(modified_world):
         for tx, tile in enumerate(row):
+            visited_lands = []
 
             # If on land and haven't visited this land, reset visited_lands
             if tile == LAND and [tx, ty] not in visited_lands:
-                visited_lands = [[x, y]]
+                visited_lands.append([x, y])
 
                 # Walk modified_world to find longest continuous path of lands
-                land_count = walk_list(x, y, modified_world, 1)
+                land_count = walk_list(x, y, modified_world, 1, visited_lands)
 
                 # Track maximum path size
                 if land_count > land_max:
@@ -84,8 +83,7 @@ def get_new_world_best_score(x, y):
 
 
 # Walk through the modified WORLD by looking left, right, up, and down
-def walk_list(x, y, modified_world, land_count):
-    global visited_lands
+def walk_list(x, y, modified_world, land_count, visited_lands):
     # Ensure next step's coordinates are not already visited or out of bounds
     # If able, move to next tile
 
@@ -95,7 +93,7 @@ def walk_list(x, y, modified_world, land_count):
             # Keep track of visited lands
             visited_lands.append([x - 1, y])
 
-            land_count = walk_list(x-1, y, modified_world, 1 + land_count)
+            land_count = walk_list(x-1, y, modified_world, 1 + land_count, visited_lands)
 
     # look right
     if (x + 1) < len(modified_world[y]) and not [x + 1, y] in visited_lands:
@@ -103,7 +101,7 @@ def walk_list(x, y, modified_world, land_count):
             # Keep track of visited lands
             visited_lands.append([x + 1, y])
 
-            land_count = walk_list(x+1, y, modified_world, 1 + land_count)
+            land_count = walk_list(x+1, y, modified_world, 1 + land_count, visited_lands)
 
     # look up
     if (y - 1) >= 0 and not [x, y-1] in visited_lands:
@@ -111,7 +109,7 @@ def walk_list(x, y, modified_world, land_count):
             # Keep track of visited lands
             visited_lands.append([x, y - 1])
 
-            land_count = walk_list(x, y-1, modified_world, 1 + land_count)
+            land_count = walk_list(x, y-1, modified_world, 1 + land_count, visited_lands)
 
     # look down
     if (y + 1) < len(modified_world) and not [x, y+1] in visited_lands:
@@ -119,7 +117,7 @@ def walk_list(x, y, modified_world, land_count):
             # Keep track of visited lands
             visited_lands.append([x, y + 1])
 
-            land_count = walk_list(x, y+1, modified_world, 1 + land_count)
+            land_count = walk_list(x, y+1, modified_world, 1 + land_count, visited_lands)
 
     # Return length of Island Path
     return land_count
@@ -154,9 +152,16 @@ def water_has_adjacent_land(x, y):
 
 
 if __name__ == '__main__':
+    # INPUT
+    WORLD = [
+        [1, 0, 1, 0, 0],
+        [0, 0, 1, 1, 0],
+        [0, 1, 1, 1, 1],
+        [1, 0, 1, 0, 0]
+    ]
     print("original input: ", WORLD)
 
     # Run the algorithm
-    size = island_problem()
+    size = island_problem(WORLD)
     print("Best Island Size = ", size)
 
