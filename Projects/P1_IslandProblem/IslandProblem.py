@@ -10,11 +10,18 @@
 #         [1, 1, 0]
 # ]
 
+# WORLD = [
+#     [1, 0, 1, 0, 0],
+#     [0, 0, 1, 1, 0],
+#     [0, 1, 1, 1, 1],
+#     [1, 0, 1, 0, 0]
+# ]
+
 WORLD = [
-    [1, 0, 1, 0, 0],
-    [0, 0, 1, 1, 0],
-    [0, 1, 1, 1, 1],
-    [1, 0, 1, 0, 0]
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1]
 ]
 
 visited_lands = []
@@ -35,6 +42,10 @@ def island_problem():
                 # Track longest continuous path size
                 if land_size > land_max:
                     land_max = land_size
+
+    # Edge case where WORLD is all WATERs
+    if land_max == 0:
+        land_max = 1
 
     return land_max
 
