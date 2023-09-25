@@ -11,6 +11,38 @@ mpg = 10
 FAILED_TO_FIND = -1
 
 
+def city_problem_v2():
+    endLoop = False
+    start_pos = 0
+
+    for i in range(len(city_distances)):
+        endLoop = drive_cities_v2()
+
+        if not endLoop:
+            temp = city_distances.pop(0)
+            city_distances.append(temp)
+
+            temp = city_fuel.pop(0)
+            city_fuel.append(temp)
+
+            start_pos += 1
+        else:
+            print(f"Preferred starting city: {start_pos}")
+            return start_pos
+
+    return FAILED_TO_FIND
+
+
+def drive_cities_v2():
+    total = 0
+    for city in range(len(city_distances)):
+        total += (city_fuel[city] * mpg) - city_distances[city]
+        if total < 0:
+            return False
+
+    return True
+
+
 def city_problem():
 
     # Test each city for possible best starting city
@@ -57,11 +89,14 @@ if __name__ == '__main__':
     print(f"city distances: {city_distances}")
     print(f"city fuel: {city_fuel}")
     print(f"mpg: {mpg}")
-    # Run the algorithm
-    preferred_starting_city = city_problem()
 
-    # Check for algorithm failure
-    if preferred_starting_city != FAILED_TO_FIND:
-        print(f"{preferred_starting_city} is the preferred starting city!")
-    else:
-        print("failed to find a good starting city :(")
+    # Run the algorithm
+    # preferred_starting_city = city_problem()
+
+    answer = city_problem_v2()
+
+    # # Check for algorithm failure
+    # if preferred_starting_city != FAILED_TO_FIND:
+    #     print(f"{preferred_starting_city} is the preferred starting city!")
+    # else:
+    #     print("failed to find a good starting city :(")
