@@ -55,61 +55,66 @@ def take3(durations, stations):
     end = 0
     dict2 = {}
 
-    # while True:
-    #     for i in range(stations):
-    #         temp = durations[start:len(durations) - (stations - i - 1)]
-    #         start = len(durations) - (stations - i - 1)
-    #
-    #         sol_list.append(temp)
-    #     solutions_dict[count] = sol_list
-    #     count += 1
-    #     break
-    # print(solutions_dict)
-    count = 1
-    while True:
-        if count > 2:
-            break
+    start = 0
+    matrix = []
+    for j in range(len(durations) - (stations - 1)):
+        sol_list.append(j + 1)
 
-        start = 0
-        matrix = []
-        for j in range(len(durations) - (stations - 1)):
-            sol_list.append(j + 1)
+    for a in sol_list:
+        for b in sol_list:
+            for c in sol_list:
+                if a + b + c == len(durations):
+                    matrix.append([a,b,c])
+    # print(matrix)
+    testDict = {}
+    for i, m in enumerate(matrix):
+        itr = 0
+        testList = []
+        for j, n in enumerate(m):
+            temp = durations[itr:itr + n]
 
-        for a in sol_list:
-            for b in sol_list:
-                for c in sol_list:
-                    if a + b + c == len(durations):
-                        matrix.append([a,b,c])
-        print(matrix)
-        testDict = {}
-        for i, m in enumerate(matrix):
-            itr = 0
-            testList = []
-            for j, n in enumerate(m):
-                temp = durations[itr:itr + n]
+            testList.append(temp)
 
-                testList.append(temp)
+            itr += n
+        testDict[i] = testList
+    # print(testDict)
+    testMatrix = []
+    for key in testDict:
+        should_discard = False
+        for k, val in enumerate(testDict[key]):
+            # print(val)
+            sum1 = 0
+            for i in range(len(val)):
+                sum1 += val[i]
+                if i < len(val)-1:
+                    if val[i] < val[i + 1] and sum1 < val[i + 1]:
+                        # print("discard")
+                        should_discard = True
+        if not should_discard:
+            testMatrix.append(testDict[key])
 
-                itr += n
-            testDict[i] = testList
-        print(testDict)
-        testMatrix = []
-        for key in testDict:
-            should_discard = False
-            for k, val in enumerate(testDict[key]):
-                print(val)
-                for i in range(len(val)):
-                    if i < len(val)-1:
-                        if val[i] < val[i + 1]:
-                            print("discard")
-                            should_discard = True
-            if not should_discard:
-                testMatrix.append(testDict[key])
+    final_temp_list = []
+    for i, v in enumerate(testMatrix):
+        delete_me = False
+        # print(v)
+        for j, w in enumerate(v):
+            my_total = sum(w)
+            if j < len(v) - 1:
+                # print(my_total, "test: ", v[j + 1][0])
+                if my_total < v[j + 1][0]:
+                    # print(v[j + 1][0])
+                    # print("delete me")
+                    delete_me = True
 
-        print(testMatrix)
+            # print(w)
+        if not delete_me:
+            final_temp_list.append(v)
 
-        count += 1
-        break
+    print(final_temp_list)
+
+    # print(testMatrix)
+
+
 
 
 if __name__ == '__main__':
