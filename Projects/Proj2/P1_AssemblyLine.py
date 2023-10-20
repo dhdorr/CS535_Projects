@@ -1,3 +1,6 @@
+import math
+
+
 def assembly_line(durations, stations):
     maxNum = 0
     cutElement = 0
@@ -43,10 +46,31 @@ def take2(durations, stations):
     print(station_list)
 
 
+def take3(durations, stations):
+    print("hello3")
+    solutions_dict = {}
+    sol_list = []
+    start = 0
+    count = 0
+
+    while True:
+        for i in range(stations):
+            temp = durations[start:len(durations) - (stations - i - 1)]
+            start = len(durations) - (stations - i - 1)
+
+            sol_list.append(temp)
+        solutions_dict[count] = sol_list
+        count += 1
+        break
+    print(solutions_dict)
+
+
+
 if __name__ == '__main__':
     durations = [15,15,30,30,45]
     stations = 3
     # ans = assembly_line(durations, stations)
     # print("answer = ", ans)
 
-    take2(durations, stations)
+    # take2(durations, stations)
+    take3(durations, stations)
