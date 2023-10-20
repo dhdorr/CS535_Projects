@@ -1,4 +1,4 @@
-
+import itertools
 
 def take3(durations, stations):
     print("hello3")
@@ -11,15 +11,42 @@ def take3(durations, stations):
 
     start = 0
     matrix = []
+    # Build a matrix of possible element counts.
+    # In the example, durations.len = 5 & stations = 3
+    # So the max number of tasks a station can have is 3 ((5 - (3 - 1)) = 3)
     for j in range(len(durations) - (stations - 1)):
         sol_list.append(j + 1)
+    matrix = []
+    for i in range(1, stations + 1):
+        res = [[i, a, b] for a in range(1, stations + 1) for b in sol_list]
+        for r in res:
+            if sum(r) == len(durations):
+                matrix.append(r)
+    print("matrix: ", matrix)
 
-    for a in sol_list:
-        for b in sol_list:
-            for c in sol_list:
-                if a + b + c == len(durations):
-                    matrix.append([a,b,c])
+    # for s in range(1, len(sol_list) + 1):
+    #     matrix.extend(itertools.product(sol_list, repeat=s))
+    # while True:
+    #     count = 0
+    #     for i, m in enumerate(matrix):
+    #         count = i
+    #         if sum(m) != len(durations):
+    #             matrix.remove(m)
+    #             break
+    #         if len(m) < stations:
+    #             matrix.remove(m)
+    #             break
+    #     if count >= len(matrix):
+    #         break
     # print(matrix)
+
+    # for a in sol_list:
+    #     for b in sol_list:
+    #         for c in sol_list:
+    #             if a + b + c == len(durations):
+    #                 matrix.append([a,b,c])
+    # print(matrix)
+    masterList = []
     testDict = {}
     for i, m in enumerate(matrix):
         itr = 0
@@ -31,6 +58,10 @@ def take3(durations, stations):
 
             itr += n
         testDict[i] = testList
+        masterList.append(testList)
+        print("master list: ", masterList)
+
+    my_list = prune_list(masterList)
     # print(testDict)
     testMatrix = []
     for key in testDict:
@@ -76,6 +107,26 @@ def take3(durations, stations):
     # print(testMatrix)
 
 
+def prune_list(master_list):
+    build_list = []
+    for m in master_list:
+        print(m)
+        discard_me = False
+        for i in range(len(m)):
+            print(m[i])
+            for j in range(len(m[i])):
+                if j + 1 < len(m[i]):
+                    if m[i][j] < m[i][j+1]:
+                        print("discard me")
+                        discard_me = True
+                if i + 1 < len(m):
+                    if sum(m[i]) < m[i + 1][0]:
+                        print("discard me2")
+                        discard_me = True
+        if not discard_me:
+            build_list.append(m)
+    print("build list: ", build_list)
+    return build_list
 
 
 if __name__ == '__main__':
