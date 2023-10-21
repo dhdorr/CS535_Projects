@@ -1,6 +1,6 @@
 
 
-def take3(durations, stations):
+def optimize_assembly_line(durations, stations):
     sol_list = []
     matrix = []
     masterList = []
@@ -21,7 +21,7 @@ def take3(durations, stations):
 
         for n in m:
             temp_list.append(durations[itr:itr + n])
-            # n is the number of tasks at the ith station, so jump the start position by the number of tasks assigned
+            # n is the number of tasks at the ith station, so jump the start position by n
             itr += n
         # Keep all possible configurations for task/station allocation
         masterList.append(temp_list)
@@ -47,7 +47,7 @@ def take3(durations, stations):
         if totals_dict[k] == a:
             min_pos = k
 
-    return {"station_config": master_dict[min_pos], "longest_duration": a}
+    return {"stations_config": master_dict[min_pos], "longest_duration": a}
 
 def build_pruned_dict(master_list):
     build_dict = {}
@@ -74,5 +74,5 @@ if __name__ == '__main__':
     durations = [15,15,30,30,45]
     stations = 3
 
-    answer = take3(durations, stations)
+    answer = optimize_assembly_line(durations, stations)
     print(answer)
