@@ -1,34 +1,36 @@
 
 
 def longest_substring(Strings):
-    string_dict = build_substring_dict(Strings)
     substr_list = []
+    string_graph = {}
+    possible_substrings = []
+    maxLen = 1
+
     for s in Strings:
         for a in Strings:
             if len(a) == len(s) + 1:
-                substr_list.append([a, s])
+                is_valid = True
                 for t in s:
-                    if t not in string_dict[a]:
-                        substr_list.pop()
-                        # print("discard: ", s)
+                    if t not in a:
+                        is_valid = False
                         break
-    # print(substr_list)
+                if is_valid:
+                    substr_list.append([a, s])
 
-    string_graph = {}
     for s in Strings:
         string_graph[s] = []
 
     for s in substr_list:
         string_graph[s[0]].append(s[1])
-    # print(string_graph)
 
-    possible_substrings = []
-    maxLen = 2
+    print(string_graph)
+
     for key in string_graph.keys():
         if not string_graph[key]:
             continue
 
         temp_list = dfs_v2(string_graph, key, 1)
+
         if len(temp_list) > maxLen:
             maxLen = len(temp_list)
             possible_substrings.append(temp_list)
@@ -43,18 +45,10 @@ def dfs_v2(string_graph, start, count, visited=None):
     visited.append(start)
 
     for next in string_graph[start]:
-        dfs_v2(string_graph, next, count + 1, visited)
+        if next not in visited:
+            dfs_v2(string_graph, next, count + 1, visited)
     return visited
 
-
-def build_substring_dict(Strings):
-    string_dict = {}
-    for s in Strings:
-        temp_list = [c for c in s]
-        string_dict[s] = temp_list
-    # print(string_dict)
-
-    return string_dict
 
 
 if __name__ == '__main__':
