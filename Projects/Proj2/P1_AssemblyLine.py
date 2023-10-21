@@ -5,10 +5,7 @@ def take3(durations, stations):
     matrix = []
     masterList = []
 
-    # Build a matrix of possible element counts.
-    for j in range(len(durations) - (stations - 1)):
-        # Any given station can have 1, 2 or 3 tasks
-        sol_list.append(j + 1)
+    sol_list = [j+1 for j in range(len(durations) - (stations - 1))]
 
     # Build a matrix of all possible combinations of tasks per station
     # I.E. [[1],[1],[1]] ... [[3],[3],[3]] and everything in between
@@ -17,14 +14,14 @@ def take3(durations, stations):
 
     # Using the precomputed tasks per station matrix, create a new matrix using the tasks available
     # I.E. [[1][1][3]] --> [[15],[15],[30,30,45]]
-    for i, m in enumerate(matrix):
+    for m in matrix:
         # Track start position for the tasks to assign each station.
         itr = 0
         temp_list = []
 
-        for j, n in enumerate(m):
+        for n in m:
             temp_list.append(durations[itr:itr + n])
-            # n represents the number of tasks, so jump the start position by the number of tasks assigned
+            # n is the number of tasks at the ith station, so jump the start position by the number of tasks assigned
             itr += n
         # Keep all possible configurations for task/station allocation
         masterList.append(temp_list)
