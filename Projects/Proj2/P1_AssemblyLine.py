@@ -6,8 +6,6 @@ def take3(durations, stations):
     masterList = []
 
     # Build a matrix of possible element counts.
-    # In the example, durations.len = 5 & stations = 3
-    # So the max number of tasks a station can have is 3 ((5 - (3 - 1)) = 3)
     for j in range(len(durations) - (stations - 1)):
         # Any given station can have 1, 2 or 3 tasks
         sol_list.append(j + 1)
@@ -18,7 +16,6 @@ def take3(durations, stations):
         matrix += [[i, a, b] for a in range(1, stations + 1) for b in sol_list if (i + a + b) == len(durations)]
 
     # Using the precomputed tasks per station matrix, create a new matrix using the tasks available
-    # Tasks are always in the order given.
     # I.E. [[1][1][3]] --> [[15],[15],[30,30,45]]
     for i, m in enumerate(matrix):
         # Track start position for the tasks to assign each station.
@@ -58,11 +55,9 @@ def take3(durations, stations):
 def build_pruned_dict(master_list):
     build_dict = {}
 
-    # Discard configuration tuple if:
-    # 1) m[i][j] < m[i][j + 1] and sum(m[i][0:j+1]) < m[i][j+1])
-    #       if next element in station(i) tasks > current element AND sum(0, current element) < next element
-    # 2) sum(m[i]) < m[i + 1][0]
-    #       sum of station tasks durations < the duration of the next station's first task.
+    # Discard configuration if:
+    # 1) if next element in station(i) tasks > current element AND sum(0, current element) < next element
+    # 2) sum of station tasks durations < the duration of the next station's first task.
     for idx, m in enumerate(master_list):
         discard_me = False
         for i in range(len(m)):
