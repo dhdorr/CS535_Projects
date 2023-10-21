@@ -10,16 +10,13 @@ def take2(Strings):
         string_index_dict[s] = i
     for j, s in enumerate(Strings):
         test = dfs_v3(j, Strings, string_index_dict)
-        print(test)
         path_dict[j] = test
 
-
-    print(path_dict)
     for k in path_dict.keys():
         if len(path_dict[k]) > maxLen:
             maxLen = len(path_dict[k])
             answer = path_dict[k]
-    return answer
+    return {"longest_string_chain": answer, "length": len(answer)}
 
 
 def dfs_v3(s_idx, Strings, string_index_dict, chain_path_dict=None):
@@ -49,4 +46,4 @@ if __name__ == '__main__':
     Strings = ["abde", "abc", "abd", "abcde", "ade", "ae", "1abde", "abcdef"]
 
     ans2 = take2(Strings)
-    print("answer: ", ans2)
+    print(ans2)
