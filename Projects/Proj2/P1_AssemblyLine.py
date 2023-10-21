@@ -24,7 +24,7 @@ def take3(durations, stations):
                 matrix.append(r)
     # Using the precomputed tasks per station matrix, create a new matrix using the tasks available
     # Tasks are always in the order given.
-    # I.E. [[1][1][3]] --> [[15],[15],[30],[30],[45]]
+    # I.E. [[1][1][3]] --> [[15],[15],[30,30,45]]
     for i, m in enumerate(matrix):
         # Track start position for the tasks to assign each station.
         itr = 0
