@@ -72,4 +72,3 @@ if __name__ == '__main__':
 
     answer = optimize_assembly_line(durations, stations)
     print(answer)
-    
