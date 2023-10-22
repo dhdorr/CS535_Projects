@@ -5,7 +5,7 @@ def string_graph_dfs(sol_dict, idx, visited=None):
 
     # Initialize path
     path = [idx]
-    # print(path)
+    
     # If dfs cannot go further, return the path + the current node
     if not sol_dict[idx]:
         return visited + path
