@@ -1,4 +1,7 @@
-
+# Derek Dorr
+# CS535
+# Project 2
+# 11/1/2023
 
 def optimize_assembly_line(durations, stations):
     sol_list = []
@@ -36,6 +39,7 @@ def optimize_assembly_line(durations, stations):
     # Get the maximum duration value of each station configuration.
     for f in master_dict.keys():
         max_durations_dict[f] = max([sum(g) for g in master_dict[f]])
+        print(max_durations_dict[f])
 
     # Of all the longest configurations, optimize for minimum duration
     min_duration = min(max_durations_dict.values())
@@ -53,14 +57,14 @@ def build_pruned_dict(master_list):
     # 2) sum of station tasks durations < the duration of the next station's first task.
     for idx, m in enumerate(master_list):
         discard_me = False
-        for i in range(len(m)):
-            for j in range(len(m[i])):
-                if j + 1 < len(m[i]):
-                    if m[i][j] < m[i][j+1] and sum(m[i][0:j+1]) < m[i][j+1]:
-                        discard_me = True
-                if i + 1 < len(m):
-                    if sum(m[i]) < m[i + 1][0]:
-                        discard_me = True
+        # for i in range(len(m)):
+        #     for j in range(len(m[i])):
+        #         if j + 1 < len(m[i]):
+        #             if m[i][j] < m[i][j+1] and sum(m[i][0:j+1]) < m[i][j+1]:
+        #                 discard_me = True
+        #         if i + 1 < len(m):
+        #             if sum(m[i]) < m[i + 1][0]:
+        #                 discard_me = True
         if not discard_me:
             build_dict[idx] = m
     return build_dict

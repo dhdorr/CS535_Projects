@@ -1,3 +1,8 @@
+# Derek Dorr
+# CS535
+# Project 2
+# 11/1/2023
+
 def string_graph_dfs(sol_dict, idx, visited=None):
     # Create a path list
     if not visited:
@@ -42,12 +47,12 @@ def build_solution_graph(Strings):
                 spelling_dict[w2] = [i for i in w2]
                 is_valid = True
 
-                # Check if w2 contains all of w
-                for c in spelling_dict[w2]:
-                    if c not in spelling_dict[w]:
-                        is_valid = False
-                        # print("w2: ", w2, " w: ", w)
-                        break
+                # # Check if w2 contains all of w
+                # for c in spelling_dict[w2]:
+                #     if c not in spelling_dict[w]:
+                #         is_valid = False
+                #         # print("w2: ", w2, " w: ", w)
+                #         break
 
                 if is_valid:
                     # Check if there is only a 1-letter difference between the spelling of w and w2
